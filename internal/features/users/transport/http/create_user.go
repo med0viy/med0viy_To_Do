@@ -9,7 +9,7 @@ import (
 	core_http_response "github.com/med0viy/practika/internal/core/transport/http/response"
 )
 
-type CreateUserDTO struct {
+type CreateUserRequest struct {
 	FullName    string  `json:"full_name" validate:"required,min=3,max=100"`
 	PhoneNumber *string `json:"phone_nuber" validate:"omitempty,min=10,max=15,startswith=+"`
 }
@@ -23,7 +23,7 @@ func (h *UsersHTTPHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	log.Debug("invoke CreateUser handler")
 
-	var req CreateUserDTO
+	var req CreateUserRequest
 	if err := core_http_request.DecodeAndValidateRequest(r, &req); err != nil {
 		responseHandler.ErrorResponse(err, "failed to decode and validate HTTP request")
 		return
@@ -42,6 +42,6 @@ func (h *UsersHTTPHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	responseHandler.JSONResponse(response, http.StatusCreated)
 }
 
-func domainFromDTO(dto CreateUserDTO) domain.User {
+func domainFromDTO(dto CreateUserRequest) domain.User {
 	return domain.NewUserUninitiolized(dto.FullName, dto.PhoneNumber)
 }

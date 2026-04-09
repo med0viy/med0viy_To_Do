@@ -8,10 +8,10 @@ import (
 )
 
 type User struct {
-	ID          int     `json:"id"`
-	Version     int     `json:"version"`
-	FullName    string  `json:"full_name"`
-	PhoneNumber *string `json:"phone_nuber"`
+	ID          int
+	Version     int
+	FullName    string
+	PhoneNumber *string
 }
 
 func NewUser(
@@ -86,7 +86,10 @@ func NewUserPatch(
 
 func (p *UserPatch) Validate() error {
 	if p.FullName.Set && p.FullName.Value == nil {
-		return fmt.Errorf("`FullName` can't be patched to NULL: %w", core_errors.ErrInvalidArgument)
+		return fmt.Errorf(
+			"`FullName` can't be patched to NULL: %w",
+			core_errors.ErrInvalidArgument,
+		)
 	}
 
 	return nil

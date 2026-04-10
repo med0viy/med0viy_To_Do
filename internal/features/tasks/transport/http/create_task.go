@@ -12,12 +12,12 @@ import (
 )
 
 type CreateTaskRequest struct {
-	Title       string               `json:"title" validate:"required,min=1,max=100"`
-	Description *string              `json:"description" validate:"omitempty,min=1,max=1000"`
-	IsImportant *bool                `json:"is_important" validate:"required"`
-	IsInMyDay   *bool                `json:"is_in_my_day" validate:"required"`
-	DueDate     *core_http_types.Date `json:"due_date"`
-	AutorUserID int                  `json:"autor_user_id" validate:"required"`
+	Title        string                `json:"title" validate:"required,min=1,max=100"`
+	Description  *string               `json:"description" validate:"omitempty,min=1,max=1000"`
+	IsImportant  *bool                 `json:"is_important" validate:"required"`
+	IsInMyDay    *bool                 `json:"is_in_my_day" validate:"required"`
+	DueDate      *core_http_types.Date `json:"due_date"`
+	AuthorUserID int                   `json:"author_user_id" validate:"required"`
 }
 
 type CreateTaskResponse TaskDTOResponse
@@ -43,7 +43,7 @@ func (h *TasksHTTPHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		*req.IsImportant,
 		*req.IsInMyDay,
 		(*time.Time)(req.DueDate),
-		req.AutorUserID,
+		req.AuthorUserID,
 	)
 
 	task, err := h.tasksService.CreateTask(ctx, taskDomain)

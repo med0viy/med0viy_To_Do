@@ -18,9 +18,9 @@ func (r *TasksRepository) CreateTask(
 	defer cancel()
 
 	query := `
-	INSERT INTO todoapp.tasks (title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, autor_user_id)
+	INSERT INTO todoapp.tasks (title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, author_user_id)
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-	RETURNING id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, autor_user_id;
+	RETURNING id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, author_user_id;
 	`
 
 	row := r.pool.QueryRow(
@@ -34,7 +34,7 @@ func (r *TasksRepository) CreateTask(
 		task.CreatedAt,
 		task.DueDate,
 		task.ComplitedAt,
-		task.AutorUserID,
+		task.AuthorUserID,
 	)
 
 	var taskModel TaskModel
@@ -49,7 +49,7 @@ func (r *TasksRepository) CreateTask(
 		&taskModel.CreatedAt,
 		&taskModel.DueDate,
 		&taskModel.ComplitedAt,
-		&taskModel.AutorUserID,
+		&taskModel.AuthorUserID,
 	)
 
 	if err != nil {
@@ -57,7 +57,7 @@ func (r *TasksRepository) CreateTask(
 			return domain.Task{}, fmt.Errorf(
 				"%v: user with id='%d': %w",
 				err,
-				task.AutorUserID,
+				task.AuthorUserID,
 				core_errors.ErrNotFound,
 			)
 		}

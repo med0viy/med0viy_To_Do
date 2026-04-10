@@ -17,7 +17,7 @@ func (r *TasksRepository) GetTasks(
 	defer cancel()
 
 	query := `
-	SELECT id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, autor_user_id
+	SELECT id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, author_user_id
 	FROM todoapp.tasks
 	%s
 	ORDER BY id ASC
@@ -28,7 +28,7 @@ func (r *TasksRepository) GetTasks(
 	args := []any{limit, offset}
 
 	if userID != nil {
-		query = fmt.Sprintf(query, "WHERE autor_user_id=$3")
+		query = fmt.Sprintf(query, "WHERE author_user_id=$3")
 		args = append(args, userID)
 	} else {
 		query = fmt.Sprintf(query, "")
@@ -61,7 +61,7 @@ func (r *TasksRepository) GetTasks(
 			&taskModel.CreatedAt,
 			&taskModel.DueDate,
 			&taskModel.ComplitedAt,
-			&taskModel.AutorUserID,
+			&taskModel.AuthorUserID,
 		)
 
 		if err != nil {

@@ -18,7 +18,7 @@ func (r *TasksRepository) GetTask(
 	defer cancel()
 
 	query := `
-	SELECT id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, autor_user_id
+	SELECT id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, author_user_id
 	FROM todoapp.tasks
 	WHERE id=$1;
 	`
@@ -37,7 +37,7 @@ func (r *TasksRepository) GetTask(
 		&taskModel.CreatedAt,
 		&taskModel.DueDate,
 		&taskModel.ComplitedAt,
-		&taskModel.AutorUserID,
+		&taskModel.AuthorUserID,
 	)
 
 	if err != nil {

@@ -41,7 +41,7 @@ func (r *TasksRepository) PatchTask(
 		created_at,
 		due_date,
 		complited_at,
-		autor_user_id;
+		author_user_id;
 	`
 
 	row := r.pool.QueryRow(
@@ -70,7 +70,7 @@ func (r *TasksRepository) PatchTask(
 		&taskModel.CreatedAt,
 		&taskModel.DueDate,
 		&taskModel.ComplitedAt,
-		&taskModel.AutorUserID,
+		&taskModel.AuthorUserID,
 	)
 
 	if err != nil {

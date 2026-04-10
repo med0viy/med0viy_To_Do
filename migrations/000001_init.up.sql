@@ -29,5 +29,12 @@ CREATE TABLE todoapp.tasks (
         (complited=TRUE AND complited_at IS NOT NULL AND complited_at >= created_at)    
     ),
 
-    autor_user_id INTEGER       NOT NULL REFERENCES todoapp.users(id)
+    author_user_id INTEGER       NOT NULL REFERENCES todoapp.users(id)
 );
+
+CREATE TABLE todoapp.lists (
+    id             SERIAL                PRIMARY KEY,
+    version        BIGINT       NOT NULL DEFAULT 1,
+    name           VARCHAR(100) NOT NULL CHECK(char_length(name) BETWEEN 1 and 100),
+    author_user_id INTEGER      NOT NULL REFERENCES todoapp.users(id)
+)

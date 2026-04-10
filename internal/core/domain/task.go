@@ -8,17 +8,17 @@ import (
 )
 
 type Task struct {
-	ID          int
-	Version     int
-	Title       string
-	Description *string
-	Complited   bool
-	IsImportant bool
-	IsInMyDay   bool
-	CreatedAt   time.Time
-	DueDate     *time.Time
-	ComplitedAt *time.Time
-	AutorUserID int
+	ID           int
+	Version      int
+	Title        string
+	Description  *string
+	Complited    bool
+	IsImportant  bool
+	IsInMyDay    bool
+	CreatedAt    time.Time
+	DueDate      *time.Time
+	ComplitedAt  *time.Time
+	AuthorUserID int
 }
 
 func NewTask(
@@ -32,20 +32,20 @@ func NewTask(
 	createdAt time.Time,
 	dueDate *time.Time,
 	complitedAt *time.Time,
-	autorUserID int,
+	authorUserID int,
 ) Task {
 	return Task{
-		ID:          id,
-		Version:     version,
-		Title:       title,
-		Description: description,
-		Complited:   complited,
-		IsImportant: isImportant,
-		IsInMyDay:   isInMyDay,
-		CreatedAt:   createdAt,
-		DueDate:     dueDate,
-		ComplitedAt: complitedAt,
-		AutorUserID: autorUserID,
+		ID:           id,
+		Version:      version,
+		Title:        title,
+		Description:  description,
+		Complited:    complited,
+		IsImportant:  isImportant,
+		IsInMyDay:    isInMyDay,
+		CreatedAt:    createdAt,
+		DueDate:      dueDate,
+		ComplitedAt:  complitedAt,
+		AuthorUserID: authorUserID,
 	}
 }
 
@@ -55,7 +55,7 @@ func NewTaskUninitialized(
 	isImportant bool,
 	isInMyDay bool,
 	dueDate *time.Time,
-	autorUserID int,
+	authorUserID int,
 ) Task {
 	return NewTask(
 		UninitiolizedID,
@@ -68,7 +68,7 @@ func NewTaskUninitialized(
 		time.Now(),
 		dueDate,
 		nil,
-		autorUserID,
+		authorUserID,
 	)
 }
 

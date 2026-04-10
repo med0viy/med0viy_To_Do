@@ -7,17 +7,17 @@ import (
 )
 
 type TaskModel struct {
-	ID          int
-	Version     int
-	Title       string
-	Description *string
-	Complited   bool
-	IsImportant bool
-	IsInMyDay   bool
-	CreatedAt   time.Time
-	DueDate     *time.Time
-	ComplitedAt *time.Time
-	AutorUserID int
+	ID           int
+	Version      int
+	Title        string
+	Description  *string
+	Complited    bool
+	IsImportant  bool
+	IsInMyDay    bool
+	CreatedAt    time.Time
+	DueDate      *time.Time
+	ComplitedAt  *time.Time
+	AuthorUserID int
 }
 
 func TaskDomainFromModel(taskModel TaskModel) domain.Task {
@@ -32,7 +32,7 @@ func TaskDomainFromModel(taskModel TaskModel) domain.Task {
 		taskModel.CreatedAt,
 		taskModel.DueDate,
 		taskModel.ComplitedAt,
-		taskModel.AutorUserID,
+		taskModel.AuthorUserID,
 	)
 }
 
@@ -51,7 +51,7 @@ func TaskDomainsFromModels(tasks []TaskModel) []domain.Task {
 			model.CreatedAt,
 			model.DueDate,
 			model.ComplitedAt,
-			model.AutorUserID,
+			model.AuthorUserID,
 		)
 
 		taskDomains[k] = taskDomain

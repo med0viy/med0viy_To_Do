@@ -8,7 +8,7 @@ import (
 	core_errors "github.com/med0viy/practika/internal/core/errors"
 )
 
-func (s *UsersServise) GetUsers(
+func (s *UsersService) GetUsers(
 	ctx context.Context,
 	limit *int,
 	offset *int,

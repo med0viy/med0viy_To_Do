@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func (s *UsersServise) DeleteUser(
+func (s *UsersService) DeleteUser(
 	ctx context.Context,
 	id int,
 ) error {

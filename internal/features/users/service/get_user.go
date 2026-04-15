@@ -7,7 +7,7 @@ import (
 	"github.com/med0viy/practika/internal/core/domain"
 )
 
-func (s *UsersServise) GetUser(
+func (s *UsersService) GetUser(
 	ctx context.Context,
 	id int,
 ) (domain.User, error) {

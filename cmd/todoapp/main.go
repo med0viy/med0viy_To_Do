@@ -13,6 +13,9 @@ import (
 	core_pgx_pool "github.com/med0viy/practika/internal/core/repository/postgres/pool/pgx"
 	core_http_maddleware "github.com/med0viy/practika/internal/core/transport/http/middleware"
 	core_http_server "github.com/med0viy/practika/internal/core/transport/http/server"
+	lists_postgres_repository "github.com/med0viy/practika/internal/features/lists/repository/postgres"
+	lists_service "github.com/med0viy/practika/internal/features/lists/service"
+	lists_transport_http "github.com/med0viy/practika/internal/features/lists/transport/http"
 	tasks_postgres_repository "github.com/med0viy/practika/internal/features/tasks/repository/postgres"
 	tasks_service "github.com/med0viy/practika/internal/features/tasks/service"
 	tasks_transport_http "github.com/med0viy/practika/internal/features/tasks/transport/http"
@@ -56,7 +59,10 @@ func main() {
 	userServise := users_service.NewUsersServise(userRepository)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(userServise)
 
-	logger.Debug("initiazling feauture", zap.String("feature", "tasks"))
+	logger.Debug("initializing feature", zap.String("feature", "lists"))
+	listsRepository := lists_postgres_repository.NewListsRepository(pool)
+	listService := lists_service.NewListsService(listsRepository)
+	listsTransportHTTP := lists_transport_http.NewListsHTTPHandler(listService)
 	tasksRepository := tasks_postgres_repository.NewTasksRepository(pool)
 	tasksService := tasks_service.NewTasksService(tasksRepository)
 	tasksTransportHTTP := tasks_transport_http.NewTasksHTTPHandler(tasksService)
@@ -73,6 +79,7 @@ func main() {
 	apiVersionRouter := core_http_server.NewApiVersionRouter(core_http_server.ApiVersion1)
 	apiVersionRouter.RegisterRoutes(usersTransportHTTP.Routes()...)
 	apiVersionRouter.RegisterRoutes(tasksTransportHTTP.Routes()...)
+	apiVersionRouter.RegisterRoutes(listsTransportHTTP.Routes()...)
 
 	httpServer.RegisterAPIRouters(apiVersionRouter)
 

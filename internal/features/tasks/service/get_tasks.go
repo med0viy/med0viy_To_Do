@@ -11,6 +11,7 @@ import (
 func (s *TasksService) GetTasks(
 	ctx context.Context,
 	userID *int,
+	listID *int,
 	limit *int,
 	offset *int,
 ) ([]domain.Task, error) {
@@ -28,7 +29,7 @@ func (s *TasksService) GetTasks(
 		)
 	}
 
-	tasks, err := s.tasksRepository.GetTasks(ctx, userID, limit, offset)
+	tasks, err := s.tasksRepository.GetTasks(ctx, userID, listID, limit, offset)
 	if err != nil {
 		return nil, fmt.Errorf(
 			"get tasks from repository: %w",

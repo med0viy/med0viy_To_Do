@@ -28,8 +28,9 @@ func (r *TasksRepository) PatchTask(
 		is_important=$4,
 		is_in_my_day=$5,
 		due_date=$6,
-		complited_at=$7
-	WHERE id=$8 AND version=$9
+		complited_at=$7,
+		list_id=$8
+	WHERE id=$9 AND version=$10
 	RETURNING 
 		id,
 		version,
@@ -41,6 +42,7 @@ func (r *TasksRepository) PatchTask(
 		created_at,
 		due_date,
 		complited_at,
+		list_id,
 		author_user_id;
 	`
 
@@ -54,6 +56,7 @@ func (r *TasksRepository) PatchTask(
 		task.IsInMyDay,
 		task.DueDate,
 		task.ComplitedAt,
+		task.ListID,
 		taskID,
 		task.Version,
 	)
@@ -70,6 +73,7 @@ func (r *TasksRepository) PatchTask(
 		&taskModel.CreatedAt,
 		&taskModel.DueDate,
 		&taskModel.ComplitedAt,
+		&taskModel.ListID,
 		&taskModel.AuthorUserID,
 	)
 

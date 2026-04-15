@@ -16,6 +16,9 @@ import (
 	lists_postgres_repository "github.com/med0viy/practika/internal/features/lists/repository/postgres"
 	lists_service "github.com/med0viy/practika/internal/features/lists/service"
 	lists_transport_http "github.com/med0viy/practika/internal/features/lists/transport/http"
+	statistics_postgres_repository "github.com/med0viy/practika/internal/features/statistics/repository/postgres"
+	statistics_service "github.com/med0viy/practika/internal/features/statistics/service"
+	statistics_transport_http "github.com/med0viy/practika/internal/features/statistics/transport/http"
 	tasks_postgres_repository "github.com/med0viy/practika/internal/features/tasks/repository/postgres"
 	tasks_service "github.com/med0viy/practika/internal/features/tasks/service"
 	tasks_transport_http "github.com/med0viy/practika/internal/features/tasks/transport/http"
@@ -44,7 +47,7 @@ func main() {
 
 	logger.Debug("application nime zone", zap.Any("zone", time.Local))
 
-	logger.Debug("initiazling postgres connection pool")
+	logger.Debug("initializing postgres connection pool")
 	pool, err := core_pgx_pool.NewPool(
 		ctx,
 		core_pgx_pool.NewConfigMust(),
@@ -54,18 +57,25 @@ func main() {
 	}
 	defer pool.Close()
 
-	logger.Debug("initiazling feauture", zap.String("feature", "users"))
+	logger.Debug("initializing feature", zap.String("feature", "users"))
 	userRepository := users_postgres_repository.NewUsersRepository(pool)
-	userServise := users_service.NewUsersServise(userRepository)
+	userServise := users_service.NewUsersService(userRepository)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(userServise)
 
 	logger.Debug("initializing feature", zap.String("feature", "lists"))
 	listsRepository := lists_postgres_repository.NewListsRepository(pool)
 	listService := lists_service.NewListsService(listsRepository)
 	listsTransportHTTP := lists_transport_http.NewListsHTTPHandler(listService)
+
+	logger.Debug("initializing feature", zap.String("feature", "tasks"))
 	tasksRepository := tasks_postgres_repository.NewTasksRepository(pool)
 	tasksService := tasks_service.NewTasksService(tasksRepository)
 	tasksTransportHTTP := tasks_transport_http.NewTasksHTTPHandler(tasksService)
+
+	logger.Debug("initializing feature", zap.String("feature", "statistics"))
+	statisticsRepository := statistics_postgres_repository.NewStatisticsRepository(pool)
+	statisticsService := statistics_service.NewStatisticsService(statisticsRepository)
+	statisticsTransportHTTP := statistics_transport_http.NewStatisticsHTTPHandler(statisticsService)
 
 	logger.Debug("initiazling HTTP server")
 	httpServer := core_http_server.NewHTTPServer(
@@ -80,6 +90,7 @@ func main() {
 	apiVersionRouter.RegisterRoutes(usersTransportHTTP.Routes()...)
 	apiVersionRouter.RegisterRoutes(tasksTransportHTTP.Routes()...)
 	apiVersionRouter.RegisterRoutes(listsTransportHTTP.Routes()...)
+	apiVersionRouter.RegisterRoutes(statisticsTransportHTTP.Routes()...)
 
 	httpServer.RegisterAPIRouters(apiVersionRouter)
 

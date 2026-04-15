@@ -17,6 +17,7 @@ type CreateTaskRequest struct {
 	IsImportant  *bool                 `json:"is_important" validate:"required"`
 	IsInMyDay    *bool                 `json:"is_in_my_day" validate:"required"`
 	DueDate      *core_http_types.Date `json:"due_date"`
+	ListID       *int                  `json:"list_id"`
 	AuthorUserID int                   `json:"author_user_id" validate:"required"`
 }
 
@@ -43,6 +44,7 @@ func (h *TasksHTTPHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		*req.IsImportant,
 		*req.IsInMyDay,
 		(*time.Time)(req.DueDate),
+		req.ListID,
 		req.AuthorUserID,
 	)
 

@@ -19,6 +19,7 @@ type PatchTaskRequest struct {
 	IsImportant core_http_types.Nullable[bool]                 `json:"is_important"`
 	IsInMyDay   core_http_types.Nullable[bool]                 `json:"is_in_my_day"`
 	DueDate     core_http_types.Nullable[core_http_types.Date] `json:"due_date"`
+	ListID      core_http_types.Nullable[int]                  `json:"list_id"`
 }
 
 type PatchTaskResponse TaskDTOResponse
@@ -92,7 +93,7 @@ func (h *TasksHTTPHandler) PatchTask(w http.ResponseWriter, r *http.Request) {
 
 	taskPatch := taskPatchFromRequest(req)
 
-	taskDomain, err := h.tasksService.PatchTask(ctx, taskId ,taskPatch)
+	taskDomain, err := h.tasksService.PatchTask(ctx, taskId, taskPatch)
 	if err != nil {
 		responseHandler.ErrorResponse(
 			err,
@@ -123,5 +124,6 @@ func taskPatchFromRequest(request PatchTaskRequest) domain.TaskPatch {
 		request.IsImportant.ToDomain(),
 		request.IsInMyDay.ToDomain(),
 		domainDueDate,
+		request.ListID.ToDomain(),
 	)
 }

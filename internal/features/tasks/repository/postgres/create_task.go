@@ -18,9 +18,9 @@ func (r *TasksRepository) CreateTask(
 	defer cancel()
 
 	query := `
-	INSERT INTO todoapp.tasks (title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, author_user_id)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-	RETURNING id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, author_user_id;
+	INSERT INTO todoapp.tasks (title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, list_id, author_user_id)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+	RETURNING id, version, title, description, complited, is_important, is_in_my_day, created_at, due_date, complited_at, list_id, author_user_id;
 	`
 
 	row := r.pool.QueryRow(
@@ -34,6 +34,7 @@ func (r *TasksRepository) CreateTask(
 		task.CreatedAt,
 		task.DueDate,
 		task.ComplitedAt,
+		task.ListID,
 		task.AuthorUserID,
 	)
 
@@ -49,6 +50,7 @@ func (r *TasksRepository) CreateTask(
 		&taskModel.CreatedAt,
 		&taskModel.DueDate,
 		&taskModel.ComplitedAt,
+		&taskModel.ListID,
 		&taskModel.AuthorUserID,
 	)
 

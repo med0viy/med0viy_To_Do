@@ -1,4 +1,4 @@
-package tasks_postgres_repository
+package lists_postgres_repository
 
 import (
 	"context"
@@ -7,27 +7,27 @@ import (
 	core_errors "github.com/med0viy/practika/internal/core/errors"
 )
 
-func (r *TasksRepository) DeleteTask(
+func (r *ListsRepository) DeleteList(
 	ctx context.Context,
-	taskID int,
+	id int,
 ) error {
 	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
 	defer cancel()
 
 	query := `
-	DELETE FROM todoapp.tasks
+	DELETE FROM todoapp.lists
 	WHERE id=$1;
 	`
 
-	cmdTag, err := r.pool.Exec(ctx, query, taskID)
+	cmdTag, err := r.pool.Exec(ctx, query, id)
 	if err != nil {
 		return fmt.Errorf("exec query: %w", err)
 	}
 
 	if cmdTag.RowsAffected() == 0 {
 		return fmt.Errorf(
-			"task with id='%d': %w",
-			taskID,
+			"list with id='%d': %w",
+			id,
 			core_errors.ErrNotFound,
 		)
 	}

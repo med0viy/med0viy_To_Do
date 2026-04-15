@@ -18,6 +18,7 @@ type Task struct {
 	CreatedAt    time.Time
 	DueDate      *time.Time
 	ComplitedAt  *time.Time
+	ListID       *int
 	AuthorUserID int
 }
 
@@ -32,6 +33,7 @@ func NewTask(
 	createdAt time.Time,
 	dueDate *time.Time,
 	complitedAt *time.Time,
+	listID *int,
 	authorUserID int,
 ) Task {
 	return Task{
@@ -45,6 +47,7 @@ func NewTask(
 		CreatedAt:    createdAt,
 		DueDate:      dueDate,
 		ComplitedAt:  complitedAt,
+		ListID:       listID,
 		AuthorUserID: authorUserID,
 	}
 }
@@ -55,6 +58,7 @@ func NewTaskUninitialized(
 	isImportant bool,
 	isInMyDay bool,
 	dueDate *time.Time,
+	listID *int,
 	authorUserID int,
 ) Task {
 	return NewTask(
@@ -68,6 +72,7 @@ func NewTaskUninitialized(
 		time.Now(),
 		dueDate,
 		nil,
+		listID,
 		authorUserID,
 	)
 }
@@ -126,6 +131,7 @@ type TaskPatch struct {
 	IsImportant Nullable[bool]
 	IsInMyDay   Nullable[bool]
 	DueDate     Nullable[time.Time]
+	ListID      Nullable[int]
 }
 
 func NewTaskPatch(
@@ -135,6 +141,7 @@ func NewTaskPatch(
 	isImportant Nullable[bool],
 	isInMyDay Nullable[bool],
 	dueDate Nullable[time.Time],
+	listID Nullable[int],
 ) TaskPatch {
 	return TaskPatch{
 		Title:       title,
@@ -143,7 +150,22 @@ func NewTaskPatch(
 		IsImportant: isImportant,
 		IsInMyDay:   isInMyDay,
 		DueDate:     dueDate,
+		ListID:      listID,
 	}
+}
+
+func (t *Task) ComplitionDuration() *time.Duration {
+	if !t.Complited {
+		return nil
+	}
+
+	if t.ComplitedAt == nil {
+		return nil
+	}
+
+	duration := t.ComplitedAt.Sub(t.CreatedAt)
+	
+	return &duration
 }
 
 func (p *TaskPatch) Validate() error {
@@ -214,6 +236,10 @@ func (t *Task) ApplyPatched(patch TaskPatch) error {
 
 	if patch.DueDate.Set {
 		tmp.DueDate = patch.DueDate.Value
+	}
+
+	if patch.ListID.Set {
+		tmp.ListID = patch.ListID.Value
 	}
 
 	if err := tmp.Validate(); err != nil {

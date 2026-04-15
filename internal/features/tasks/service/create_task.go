@@ -21,7 +21,7 @@ func (s *TasksService) CreateTask(
 	task, err := s.tasksRepository.CreateTask(ctx, task)
 	if err != nil {
 		return domain.Task{}, fmt.Errorf(
-			"create task repository: %w",
+			"create task from repository: %w",
 			err,
 		)
 	}

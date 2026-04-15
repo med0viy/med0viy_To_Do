@@ -7,8 +7,8 @@ import (
 	"github.com/med0viy/practika/internal/core/domain"
 )
 
-func (s *UsersServise) CreateUser(
-	ctx context.Context, 
+func (s *UsersService) CreateUser(
+	ctx context.Context,
 	user domain.User,
 ) (domain.User, error) {
 	if err := user.Validate(); err != nil {

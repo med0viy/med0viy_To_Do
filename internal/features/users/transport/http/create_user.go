@@ -21,8 +21,6 @@ func (h *UsersHTTPHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	log := core_logger.LoggerContext(ctx)
 	responseHandler := core_http_response.NewHTTPResponseHandler(log, w)
 
-	log.Debug("invoke CreateUser handler")
-
 	var req CreateUserRequest
 	if err := core_http_request.DecodeAndValidateRequest(r, &req); err != nil {
 		responseHandler.ErrorResponse(err, "failed to decode and validate HTTP request")
@@ -33,7 +31,11 @@ func (h *UsersHTTPHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	userDomain, err := h.usersService.CreateUser(ctx, userDomain)
 	if err != nil {
-		responseHandler.ErrorResponse(err, "failed to create user")
+		responseHandler.ErrorResponse(
+			err,
+			"failed to create user",
+		)
+
 		return
 	}
 

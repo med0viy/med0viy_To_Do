@@ -6,7 +6,7 @@ import (
 	"github.com/med0viy/practika/internal/core/domain"
 )
 
-type UsersServise struct {
+type UsersService struct {
 	usersRepository UsersRepository
 }
 
@@ -18,8 +18,8 @@ type UsersRepository interface {
 	PatchUser(ctx context.Context, id int, user domain.User) (domain.User, error)
 }
 
-func NewUsersServise(usersRepository UsersRepository) *UsersServise {
-	return &UsersServise{
+func NewUsersService(usersRepository UsersRepository) *UsersService {
+	return &UsersService{
 		usersRepository: usersRepository,
 	}
 }

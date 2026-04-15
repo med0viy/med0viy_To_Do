@@ -7,9 +7,9 @@ import (
 	"github.com/med0viy/practika/internal/core/domain"
 )
 
-func (s *UsersServise) PatchUser(
-	ctx context.Context, 
-	id int, 
+func (s *UsersService) PatchUser(
+	ctx context.Context,
+	id int,
 	patch domain.UserPatch,
 ) (domain.User, error) {
 	user, err := s.usersRepository.GetUser(ctx, id)

@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	_ "time/tzdata"
 
 	core_config "github.com/med0viy/practika/internal/core/config"
 	core_logger "github.com/med0viy/practika/internal/core/logger"

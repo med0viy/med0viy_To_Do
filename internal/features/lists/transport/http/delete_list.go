@@ -8,6 +8,16 @@ import (
 	core_http_response "github.com/med0viy/practika/internal/core/transport/http/response"
 )
 
+// DeleteList     godoc
+// @Summary       Удалить список
+// @Description   Удалить существующий в системе список по его ID
+// @Tags          lists
+// @Param         id path int true "ID удаляемого списка"
+// @Success       204 "Успешное удаление списка"
+// @Failure       400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure       404 {object} core_http_response.ErrorResponse "List not found"
+// @Failure       500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router        /lists/{id} [delete]
 func (h *ListsHTTPHandler) DeleteList(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.LoggerContext(ctx)

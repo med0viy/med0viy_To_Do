@@ -10,6 +10,16 @@ import (
 
 type GetListsResponse []ListDTOResponse
 
+// GetTasks       godoc
+// @Summary       Список списков)))
+// @Description   Просмотр списка списков))) с опциональной фильтрацией по автору
+// @Tags          lists
+// @Produce       json
+// @Param         user_id query int false "Получение списков конкретного пользователя по его id"
+// @Success       200 {object} GetListsResponse "Список списков))) успешно отдан"
+// @Failure       400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure       500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router        /lists [get]
 func (h *ListsHTTPHandler) GetLists(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.LoggerContext(ctx)

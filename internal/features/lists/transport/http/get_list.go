@@ -10,6 +10,17 @@ import (
 
 type GetListResponse ListDTOResponse
 
+// GetTask        godoc
+// @Summary       Получить список
+// @Description   Получение конкретного списка по его ID
+// @Tags          lists
+// @Produce       json
+// @Param         id path int true "ID получаемого списка"
+// @Success       200 {object} GetListResponse "Список успешно найден"
+// @Failure       400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure       404 {object} core_http_response.ErrorResponse "List not found"
+// @Failure       500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router        /lists/{id} [get]
 func (h *ListsHTTPHandler) GetList(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.LoggerContext(ctx)

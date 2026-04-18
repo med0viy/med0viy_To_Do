@@ -13,17 +13,35 @@ import (
 )
 
 type PatchTaskRequest struct {
-	Title       core_http_types.Nullable[string]               `json:"title"`
-	Description core_http_types.Nullable[string]               `json:"description"`
-	Complited   core_http_types.Nullable[bool]                 `json:"complited"`
-	IsImportant core_http_types.Nullable[bool]                 `json:"is_important"`
-	IsInMyDay   core_http_types.Nullable[bool]                 `json:"is_in_my_day"`
-	DueDate     core_http_types.Nullable[core_http_types.Date] `json:"due_date"`
-	ListID      core_http_types.Nullable[int]                  `json:"list_id"`
+	Title       core_http_types.Nullable[string]               `json:"title"         swaggertype:"string"   example:"Погулять c собакой"`
+	Description core_http_types.Nullable[string]               `json:"description"   swaggertype:"string"   example:"Одеть собаке шлейку и пойти c ней в парк"`
+	Complited   core_http_types.Nullable[bool]                 `json:"complited"     swaggertype:"boolean"  example:"false"`
+	IsImportant core_http_types.Nullable[bool]                 `json:"is_important"  swaggertype:"boolean"  example:"true"`
+	IsInMyDay   core_http_types.Nullable[bool]                 `json:"is_in_my_day"  swaggertype:"boolean"  example:"false"`
+	DueDate     core_http_types.Nullable[core_http_types.Date] `json:"due_date"      swaggertype:"string"   example:"2026-04-03"`
+	ListID      core_http_types.Nullable[int]                  `json:"list_id"       swaggertype:"integer"  example:"31"`
 }
 
 type PatchTaskResponse TaskDTOResponse
 
+// PatchTask      godoc
+// @Summary       Измененить задачу
+// @Description   Измение информации об уже существующей в системе задачи
+// @Description   ### Логика обновления полей (Three-state logic):
+// @Description   1. **Поле не передано**: `description` игнорируется, значение в БД не меняется
+// @Description   2. **Явно передано значение**: `"description": "Одеть собаке шлейку и пойти с ней в парк"` - устанавливает новое описание в БД
+// @Description   3. **Передан null**: `"description": null` - очищает поле в БД (set to NULL)
+// @Tags          tasks
+// @Accept        json
+// @Produce       json
+// @Param         id path int true "ID изменяемой задачи"
+// @Param         request body PatchTaskRequest true "PatchTask тело запроса"
+// @Success       200 {object} PatchTaskResponse "Успешно изменнённая задача"
+// @Failure       400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure       404 {object} core_http_response.ErrorResponse "Task not found"
+// @Failure       409 {object} core_http_response.ErrorResponse "Сonflict"
+// @Failure       500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router        /tasks/{id} [patch]
 func (r *PatchTaskRequest) Validate() error {
 	if r.Title.Set {
 		if r.Title.Value == nil {

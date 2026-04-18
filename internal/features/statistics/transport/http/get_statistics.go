@@ -10,13 +10,25 @@ import (
 	core_http_response "github.com/med0viy/practika/internal/core/transport/http/response"
 )
 
-type GetSattisticsResponse struct {
-	TasksCreated               int      `json:"tasks_created"`
-	TasksComplited             int      `json:"tasks_complited"`
-	TasksComplitedRate         *float64 `json:"tasks_complited_rate"`
-	TasksAvarageCompletionTime *string  `json:"tasks_avarage_completion_time"`
+type GetStatisticsResponse struct {
+	TasksCreated               int      `json:"tasks_created"                 example:"30"`
+	TasksComplited             int      `json:"tasks_complited"               example:"15"`
+	TasksComplitedRate         *float64 `json:"tasks_complited_rate"          example:"50"`
+	TasksAvarageCompletionTime *string  `json:"tasks_avarage_completion_time" example:"36m20s"`
 }
 
+// GetStatistics  godoc
+// @Summary       Получение статистики
+// @Description   Получение статистики по задачам с опциональной фильтрацией по user_id и/или временному промежутку
+// @Tags          statistics
+// @Produce       json
+// @Param         user_id query int false "Фильтрация статистики по конкретному пользователю"
+// @Param         from query string false "Начало промежутка рассмотрения статистики (включительно), формат: YYYY-MM-DD"
+// @Param         to   query string false "Конец промежутка рассмотрения статистики (не включительно), формат: YYYY-MM-DD"
+// @Success       200 {object} GetStatisticsResponse "Успешное получение статистики"
+// @Failure       400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure       500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router        /statistics [get]
 func (h *StatisticsHTTPHandler) GetStatistics(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.LoggerContext(ctx)
@@ -53,14 +65,14 @@ func (h *StatisticsHTTPHandler) GetStatistics(w http.ResponseWriter, r *http.Req
 	responseHandler.JSONResponse(response, http.StatusOK)
 }
 
-func toDTOFromDomain(statistics domain.Statistics) GetSattisticsResponse {
+func toDTOFromDomain(statistics domain.Statistics) GetStatisticsResponse {
 	var avgTime *string
 	if statistics.TasksAvarageCompletionTime != nil {
 		duration := statistics.TasksAvarageCompletionTime.String()
 		avgTime = &duration
 	}
 
-	return GetSattisticsResponse{
+	return GetStatisticsResponse{
 		TasksCreated:               statistics.TasksCreated,
 		TasksComplited:             statistics.TasksComplited,
 		TasksComplitedRate:         statistics.TasksComplitedRate,

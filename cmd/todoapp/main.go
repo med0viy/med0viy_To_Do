@@ -27,7 +27,15 @@ import (
 	users_service "github.com/med0viy/practika/internal/features/users/service"
 	users_transport_http "github.com/med0viy/practika/internal/features/users/transport/http"
 	"go.uber.org/zap"
+
+	_ "github.com/med0viy/practika/docs"
 )
+
+// @title              Golang Todo API
+// @version       1.0
+// @description   Todo Application REST-API scheme
+// @host          localhost:5050
+// @BasePath      /api/v1
 
 func main() {
 	cfg := core_config.NewConfigMust()
@@ -82,6 +90,7 @@ func main() {
 	httpServer := core_http_server.NewHTTPServer(
 		core_http_server.NewConfigMust(),
 		logger,
+		core_http_maddleware.CORS(),
 		core_http_maddleware.RequestID(),
 		core_http_maddleware.Logger(logger),
 		core_http_maddleware.Trace(),
@@ -94,6 +103,8 @@ func main() {
 	apiVersionRouter.RegisterRoutes(statisticsTransportHTTP.Routes()...)
 
 	httpServer.RegisterAPIRouters(apiVersionRouter)
+
+	httpServer.RegisterSwagger()
 
 	if err := httpServer.Run(ctx); err != nil {
 		logger.Error("HTTP server run error", zap.Error(err))

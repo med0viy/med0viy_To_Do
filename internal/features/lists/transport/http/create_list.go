@@ -10,12 +10,24 @@ import (
 )
 
 type CreateListRequest struct {
-	Name         string `json:"name" validate:"required,min=1,max=100"`
-	AuthorUserID int    `json:"author_user_id" validate:"required"`
+	Name         string `json:"name" validate:"required,min=1,max=100" example:"Работа"`
+	AuthorUserID int    `json:"author_user_id" validate:"required"     example:"13"`
 }
 
 type CreateListResponse ListDTOResponse
 
+// CreateList     godoc
+// @Summary       Cоздать список
+// @Description   Создать новый список в системе
+// @Tags          lists
+// @Accept        json
+// @Produce       json
+// @Param         request body CreateListRequest true "CreateList тело запроса"
+// @Success       201 {object} CreateListResponse "Успешно созданный список"
+// @Failure       400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure       404 {object} core_http_response.ErrorResponse "Author not found"
+// @Failure       500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router        /lists [post]
 func (h *ListsHTTPHandler) CreateList(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.LoggerContext(ctx)

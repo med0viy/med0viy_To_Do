@@ -61,6 +61,7 @@ type GetTasksFilter struct {
 
 type GetStatisticsFilter struct {
 	UserID *int
+	ListID *int
 	From   *time.Time
 	To     *time.Time
 }

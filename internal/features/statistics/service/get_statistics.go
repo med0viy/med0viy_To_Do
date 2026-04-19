@@ -12,6 +12,7 @@ import (
 func (s *StatisticsService) GetStatistics(
 	ctx context.Context,
 	userID *int,
+	listID *int,
 	from *time.Time,
 	to *time.Time,
 ) (domain.Statistics, error) {
@@ -24,7 +25,7 @@ func (s *StatisticsService) GetStatistics(
 		}
 	}
 
-	tasks, err := s.statisticsRepository.GetTasks(ctx, userID, from, to)
+	tasks, err := s.statisticsRepository.GetTasks(ctx, userID, listID, from, to)
 	if err != nil {
 		return domain.Statistics{}, fmt.Errorf("get tasks from repository: %w", err)
 	}

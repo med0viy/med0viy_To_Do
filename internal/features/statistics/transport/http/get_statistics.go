@@ -23,6 +23,7 @@ type GetStatisticsResponse struct {
 // @Tags          statistics
 // @Produce       json
 // @Param         user_id query int false "Фильтрация статистики по конкретному пользователю"
+// @Param         list_id query int false "Фильтрация статистики по конкретному списку"
 // @Param         from query string false "Начало промежутка рассмотрения статистики (включительно), формат: YYYY-MM-DD"
 // @Param         to   query string false "Конец промежутка рассмотрения статистики (не включительно), формат: YYYY-MM-DD"
 // @Success       200 {object} GetStatisticsResponse "Успешное получение статистики"
@@ -47,6 +48,7 @@ func (h *StatisticsHTTPHandler) GetStatistics(w http.ResponseWriter, r *http.Req
 	statistics, err := h.statisticsService.GetStatistics(
 		ctx,
 		filter.UserID,
+		filter.ListID,
 		filter.From,
 		filter.To,
 	)
@@ -85,6 +87,7 @@ func getStatisticsFilterFromRequest(r *http.Request) (core_http_request.GetStati
 
 	const (
 		userIDQueryParamKey = "user_id"
+		listIDQueryParamKey = "list_id"
 		fromQueryParamKey   = "from"
 		toQueryParamKey     = "to"
 	)
@@ -98,6 +101,16 @@ func getStatisticsFilterFromRequest(r *http.Request) (core_http_request.GetStati
 	}
 
 	filter.UserID = userID
+
+	listID, err := core_http_request.GetIntQueryParam(r, listIDQueryParamKey)
+	if err != nil {
+		return core_http_request.GetStatisticsFilter{}, fmt.Errorf(
+			"get `list_id` query param: %w",
+			err,
+		)
+	}
+
+	filter.ListID = listID
 
 	from, err := core_http_request.GetDateQueryParam(r, fromQueryParamKey)
 	if err != nil {

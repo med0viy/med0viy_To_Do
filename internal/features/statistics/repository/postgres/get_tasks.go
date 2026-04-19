@@ -12,6 +12,7 @@ import (
 func (r *StatisticsRepository) GetTasks(
 	ctx context.Context,
 	userID *int,
+	listID *int,
 	from *time.Time,
 	to *time.Time,
 ) ([]domain.Task, error){
@@ -32,6 +33,12 @@ func (r *StatisticsRepository) GetTasks(
 	if userID != nil {
 		conditions = append(conditions, fmt.Sprintf("author_user_id = $%d", argsID))
 		args = append(args, userID)
+		argsID++
+	}
+
+	if listID != nil {
+		conditions = append(conditions, fmt.Sprintf("list_id = $%d", argsID))
+		args = append(args, listID)
 		argsID++
 	}
 

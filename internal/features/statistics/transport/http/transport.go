@@ -14,7 +14,7 @@ type StatisticsHTTPHandler struct {
 }
 
 type StatisticsService interface {
-	GetStatistics(ctx context.Context, userID *int, from *time.Time, to *time.Time) (domain.Statistics, error)
+	GetStatistics(ctx context.Context, userID *int, listID *int, from *time.Time, to *time.Time) (domain.Statistics, error)
 }
 
 func NewStatisticsHTTPHandler(statisticsService StatisticsService) *StatisticsHTTPHandler {

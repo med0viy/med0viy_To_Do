@@ -518,6 +518,10 @@ paths:
         in: query
         name: user_id
         type: integer
+      - description: Фильтрация статистики по конкретному списку
+        in: query
+        name: list_id
+        type: integer
       - description: 'Начало промежутка рассмотрения статистики (включительно), формат:
           YYYY-MM-DD'
         in: query

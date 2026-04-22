@@ -275,6 +275,12 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
+                        "type": "integer",
+                        "description": "Фильтрация статистики по конкретному списку",
+                        "name": "list_id",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "description": "Начало промежутка рассмотрения статистики (включительно), формат: YYYY-MM-DD",
                         "name": "from",

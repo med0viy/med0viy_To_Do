@@ -6,7 +6,7 @@ type UserDTOResponse struct {
 	ID          int     `json:"id"           example:"14"`
 	Version     int     `json:"version"      example:"88"`
 	FullName    string  `json:"full_name"    example:"Burmaldak Burmaldakovich"`
-	PhoneNumber *string `json:"phone_nuber"  example:"+79998886742"`
+	PhoneNumber *string `json:"phone_number"  example:"+79998886742"`
 }
 
 func userDTOFromDomain(user domain.User) UserDTOResponse {
